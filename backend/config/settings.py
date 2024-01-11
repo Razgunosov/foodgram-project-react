@@ -23,8 +23,10 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "corsheaders",
     "djoser",
+    "colorfield",
     # my app
     "users",
+    "recipes",
 ]
 
 MIDDLEWARE = [

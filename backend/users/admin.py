@@ -4,11 +4,6 @@ from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser, Subscribe
 
 
-# class BaseAdminSettings(admin.ModelAdmin):
-#     empty_value_display = '-empty-'
-#     list_filter = ('email', 'username')
-
-
 @admin.register(CustomUser)
 class UsersAdmin(UserAdmin):
     list_display = (
@@ -20,7 +15,6 @@ class UsersAdmin(UserAdmin):
         'last_name'
     )
     list_filter = ('username', 'email')
-    # list_display_links = ('id', 'username', 'email')
     search_fields = ('role', 'username', 'email')
 
 
@@ -29,7 +23,3 @@ class SubscribeAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'author')
     # list_display_links = ('id', 'user')
     search_fields = ('user',) 
-
-
-# admin.site.register(User, UsersAdmin)
-# admin.site.register(Subscribe, SubscribeAdmin)
