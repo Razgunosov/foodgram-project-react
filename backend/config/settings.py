@@ -107,9 +107,15 @@ USE_L10N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = BASE_DIR / "static"
+
+MEDIA_URL = "/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -128,10 +134,11 @@ REST_FRAMEWORK = {
 # Djoser 2.1.0
 
 DJOSER = {
+    "LOGIN_FIELD": "email",
     "SERIALIZERS": {
-        "user_create": "users.serializers.UserCreateSerializer",
-        "user": "users.serializers.UserSerializer",
-        "current_user": "users.serializers.UserSerializer",
+        "user_create": "users.serializers.CustomUserCreateSerializer",
+        "user": "users.serializers.CustomUserSerializer",
+        "current_user": "users.serializers.CustomUserSerializer",
     },
     "PERMISSIONS": {
         "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
@@ -139,3 +146,10 @@ DJOSER = {
     },
     "HIDE_USERS": False,
 }
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:80",
+    "http://localhost:80",
+    "http://nginx-1:80",
+]

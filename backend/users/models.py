@@ -11,12 +11,12 @@ class UserRoles:
 
 class CustomUser(AbstractUser):
     username = models.CharField(
-        "Имя пользователя",
+        verbose_name="Имя пользователя",
         max_length=255,
         unique=True,
     )
     email = models.EmailField(
-        "Элетронная почта",
+        verbose_name="Элетронная почта",
         max_length=255,
         unique=True,
     )
@@ -31,6 +31,8 @@ class CustomUser(AbstractUser):
 
     class Meta:
         ordering = ("id",)
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
     def __str__(self):
         return self.username
@@ -49,6 +51,8 @@ class Subscribe(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
         ordering = ('-id',)
         constraints = [
             UniqueConstraint(fields=['user', 'author'],

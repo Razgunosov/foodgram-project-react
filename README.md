@@ -13,4 +13,5 @@ docker-compose up -d --no-deps --build
 docker exec -it infra_backend_1 python manage.py migrate
 docker exec -it infra_backend_1 python manage.py collectstatic --no-input
 docker exec -it infra_backend_1 python manage.py createsuperuser
+docker exec -it infra_backend_1 python manage.py load_ingredients
 ```
