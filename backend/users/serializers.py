@@ -18,7 +18,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         model = CustomUser
         fields = tuple(CustomUser.REQUIRED_FIELDS) + (
             CustomUser.USERNAME_FIELD,
-            'password',
+            "password",
         )
 
 
@@ -28,16 +28,16 @@ class CustomUserSerializer(UserSerializer):
     class Meta:
         model = CustomUser
         fields = (
-            'id',
-            'email',
-            'username',
-            'first_name',
-            'last_name',
-            'is_subscribed',
+            "id",
+            "email",
+            "username",
+            "first_name",
+            "last_name",
+            "is_subscribed",
         )
 
     def get_is_subscribed(self, author):
-        user = self.context.get('request').user
+        user = self.context.get("request").user
         if user.is_anonymous:
             return False
         query = Subscribe.objects.filter(author=author, user=user).exists()
@@ -49,13 +49,8 @@ class RecipeSerializer(ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = (
-            'id',
-            'name',
-            'image',
-            'cooking_time'
-        )
-    
+        fields = ("id", "name", "image", "cooking_time")
+
 
 class SubscribeSerializer(CustomUserSerializer):
     recipes_count = SerializerMethodField()
@@ -63,22 +58,23 @@ class SubscribeSerializer(CustomUserSerializer):
 
     class Meta(CustomUserSerializer.Meta):
         fields = CustomUserSerializer.Meta.fields + (
-            'recipes_count', 'recipes'
+            "recipes_count",
+            "recipes",
         )
-        read_only_fields = ('email', 'username')
+        read_only_fields = ("email", "username")
 
     def validate(self, data):
         author = self.instance
-        user = self.context.get('request').user
+        user = self.context.get("request").user
         if Subscribe.objects.filter(author=author, user=user).exists():
             raise ValidationError(
-                detail='Вы уже подписаны на пользователя!',
-                code=status.HTTP_400_BAD_REQUEST
+                detail="Вы уже подписаны на пользователя!",
+                code=status.HTTP_400_BAD_REQUEST,
             )
         if user == author:
             raise ValidationError(
-                detail='Нельзя подписаться на самого себя!',
-                code=status.HTTP_400_BAD_REQUEST
+                detail="Нельзя подписаться на самого себя!",
+                code=status.HTTP_400_BAD_REQUEST,
             )
         return data
 
@@ -86,8 +82,8 @@ class SubscribeSerializer(CustomUserSerializer):
         return author.recipes.count()
 
     def get_recipes(self, author):
-        request = self.context.get('request')
-        limit = request.GET.get('recipes_limit', default=LIMIT_RECIP)
+        request = self.context.get("request")
+        limit = request.GET.get("recipes_limit", default=LIMIT_RECIP)
         limit = int(limit)
         recipes = author.recipes.all()[:limit]
         serializer = RecipeSerializer(recipes, many=True, read_only=True)
