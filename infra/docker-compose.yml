@@ -1,14 +1,24 @@
 version: '3.8'
 services:
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - db_volume:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
   backend:
     build:
       context: ../backend
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    depends_on:
+      - db
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
+    env_file:
+      - ./.env
   frontend:
     build:
       context: ../frontend
@@ -16,6 +26,7 @@ services:
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
+      - db
       - backend
   nginx:
     image: nginx:1.21.3-alpine
@@ -28,8 +39,10 @@ services:
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
+      - db
       - backend
 
 volumes:
+  db_volume:
   static_value:
   media_value:
