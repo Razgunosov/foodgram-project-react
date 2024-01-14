@@ -7,9 +7,10 @@ services:
     env_file:
       - ./.env
   backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
+    image: razgunosov/foodgram-backend:latest
+    # build:
+    #   context: ../backend
+    #   dockerfile: Dockerfile
     ports:
       - "8000:8000"
     depends_on:
@@ -20,9 +21,10 @@ services:
     env_file:
       - ./.env
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: razgunosov/foodgram-frontend:latest
+    # build:
+    #   context: ../frontend
+    #   dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:

@@ -131,3 +131,5 @@ dmypy.json
 # .idea
 .idea
 .git_token
+.vscode/
+.vscode/settings.json
