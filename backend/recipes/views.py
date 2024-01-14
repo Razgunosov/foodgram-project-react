@@ -61,7 +61,7 @@ class RecipeViewSet(ModelViewSet):
 class ShopCartApiView(APIView):
     """Добавить или удалить рецепт в корзину"""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
 
     def post(self, request, pk):
         recipe = get_object_or_404(Recipe, id=pk)
@@ -80,7 +80,6 @@ class ShopCartApiView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def delete(self, request, pk):
-        self.permission_classes = [IsAuthorOrReadOnly]
         recipe = get_object_or_404(Recipe, id=pk)
         if not ShoppingCart.objects.filter(
             user=request.user, recipe=recipe
@@ -99,7 +98,7 @@ class ShopCartApiView(APIView):
 class FavoriteApiView(APIView):
     """Добавить или удалить рецепт в избранное"""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
 
     def post(self, request, pk):
         recipe = get_object_or_404(Recipe, id=pk)
@@ -115,7 +114,6 @@ class FavoriteApiView(APIView):
 
     def delete(self, request, pk):
         recipe = get_object_or_404(Recipe, id=pk)
-        self.permission_classes = [IsAuthorOrReadOnly]
         if not Favorite.objects.filter(
             user=request.user, recipe=recipe
         ).exists():

@@ -12,13 +12,13 @@ from .models import Ingredient, IngredientInRecipe, Recipe, Tag
 class TagSerializer(ModelSerializer):
     class Meta:
         model = Tag
-        fields = "__all__"
+        fields = ("name", "color", "slug")
 
 
 class IngredientSerializer(ModelSerializer):
     class Meta:
         model = Ingredient
-        fields = "__all__"
+        fields = ("name", "measurement_unit")
 
 
 class RecipeShortSerializer(ModelSerializer):
@@ -82,13 +82,19 @@ class RecipeGetSerializer(ModelSerializer):
         )
 
     def get_is_favorited(self, recipe):
-        user = self.context.get("request").user
+        request = self.context.get("request")
+        if not request:
+            return False
+        user = request.user
         if user.is_anonymous:
             return False
         return user.favorites.filter(recipe=recipe).exists()
 
     def get_is_in_shopping_cart(self, recipe):
-        user = self.context.get("request").user
+        request = self.context.get("request")
+        if not request:
+            return False
+        user = request.user
         if user.is_anonymous:
             return False
         return user.shopping_cart.filter(recipe=recipe).exists()
